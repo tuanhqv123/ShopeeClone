@@ -12,7 +12,8 @@ import { AppContext } from '~/contexts/app.context'
 import { useContext } from 'react'
 import Button from '~/components/Button'
 
-type FormData = Schema
+type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password'>
+const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
 
 export default function Register() {
   const { setAuthenticated, setProfile } = useContext(AppContext)
@@ -23,7 +24,7 @@ export default function Register() {
     setError,
     formState: { errors }
   } = useForm<FormData>({
-    resolver: yupResolver(schema)
+    resolver: yupResolver(registerSchema)
   })
   const registerAccountMutation = useMutation({
     mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body)
@@ -55,9 +56,9 @@ export default function Register() {
   return (
     <div className='bg-orange'>
       <div className='container'>
-        <div className='grid grid-cols-1 lg:grid-cols-5 py-10 lg:py-32 lg:pr-10'>
+        <div className='grid grid-cols-1 py-10 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
-            <form className='p-10 rounded bg-white shadow-sm ' onSubmit={onSubmit} noValidate>
+            <form className='rounded bg-white p-10 shadow-sm ' onSubmit={onSubmit} noValidate>
               <div className='text-2xl'>Đăng kí</div>
               <Input
                 name='email'
@@ -88,7 +89,7 @@ export default function Register() {
 
               <div className='mt-1'>
                 <Button
-                  className='w-full text-center py-4 px-2 uppercase bg-red-500 text-white text-sm hover:bg-red-600 flex justify-center items-center'
+                  className='flex w-full items-center justify-center bg-red-500 px-2 py-4 text-center text-sm uppercase text-white hover:bg-red-600'
                   isLoading={registerAccountMutation.isPending}
                   disabled={registerAccountMutation.isPending}
                 >
@@ -96,9 +97,9 @@ export default function Register() {
                 </Button>
               </div>
               <div>
-                <div className='flex items-center justify-center mt-8'>
+                <div className='mt-8 flex items-center justify-center'>
                   <span className='text-gray-380'>Bạn đã có tài khoản?</span>
-                  <Link className='text-red-400 ml-2' to='/login'>
+                  <Link className='ml-2 text-red-400' to='/login'>
                     Đăng nhập
                   </Link>
                 </div>

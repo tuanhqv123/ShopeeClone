@@ -1,4 +1,4 @@
-import { Link, createSearchParams } from 'react-router-dom'
+import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import Button from '~/components/Button'
 import path from '~/constants/path'
 import { QueryConfig } from '../ProductList'
@@ -6,27 +6,46 @@ import { Category } from '~/types/category.type'
 import classNames from 'classnames'
 import InputNumber from '~/components/InputNumber'
 import { Controller, useForm } from 'react-hook-form'
+import { Schema, schema } from '~/utils/rules'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { NoUndefinedField } from '~/types/utils.type'
 
 interface Props {
   queryConfig: QueryConfig
   categories: Category[]
 }
 
-type FormData = {
-  price_min: string
-  price_max: string
-}
+type FormData = NoUndefinedField<Pick<Schema, 'price_max' | 'price_min'>>
 
+const priceSchema = schema.pick(['price_min', 'price_max'])
 export default function AsideFilter({ queryConfig, categories }: Props) {
   const { category } = queryConfig
-  const { control, handleSubmit } = useForm<FormData>({
+  const {
+    control,
+    handleSubmit,
+    trigger,
+    formState: { errors }
+  } = useForm<FormData>({
     defaultValues: {
-      price_max: '',
-      price_min: ''
-    }
+      price_min: '',
+      price_max: ''
+    },
+    resolver: yupResolver(priceSchema)
   })
+  const navigate = useNavigate()
+  const onSubmit = handleSubmit((data) => {
+    navigate({
+      pathname: path.home,
+      search: createSearchParams({
+        ...queryConfig,
+        price_max: data.price_max,
+        price_min: data.price_min
+      }).toString()
+    })
+  })
+
   return (
-    <div className='py-4 '>
+    <div className='py-4'>
       <Link
         to={path.home}
         className={classNames('flex items-center font-bold', {
@@ -46,14 +65,14 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
             </g>
           </g>
         </svg>
-        TẤT CẢ DANH MỤC
+        Tất cả danh mục
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <ul>
         {categories.map((categoryItem) => {
           const isActive = category === categoryItem._id
           return (
-            <li className='py-2 pl-2'>
+            <li className='py-2 pl-2' key={categoryItem._id}>
               <Link
                 to={{
                   pathname: path.home,
@@ -62,13 +81,13 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                     category: categoryItem._id
                   }).toString()
                 }}
-                className={classNames('relative px-2 ', {
+                className={classNames('relative px-2', {
                   'font-semibold text-orange': isActive
                 })}
               >
                 {isActive && (
-                  <svg viewBox='0 0 4 7' className='absolute left-[-10px] top-1 h-2 w-2 fill-orange '>
-                    <polygon points='4 3.5 0 0 0 7'></polygon>
+                  <svg viewBox='0 0 4 7' className='absolute left-[-10px] top-1 h-2 w-2 fill-orange'>
+                    <polygon points='4 3.5 0 0 0 7' />
                   </svg>
                 )}
                 {categoryItem.name}
@@ -77,10 +96,14 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
           )
         })}
       </ul>
-      <div className='my-4 h-[1px] bg-gray-300' />
-
       <Link to={path.home} className='mt-4 flex items-center font-bold uppercase'>
-        <svg enableBackground='new 0 0 15 15' viewBox='0 0 15 15' x={0} y={0} className=' mr-3 h-4 w-3 fill-current'>
+        <svg
+          enableBackground='new 0 0 15 15'
+          viewBox='0 0 15 15'
+          x={0}
+          y={0}
+          className='mr-3 h-4 w-3 fill-current stroke-current'
+        >
           <g>
             <polyline
               fill='none'
@@ -88,16 +111,15 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
               strokeLinecap='round'
               strokeLinejoin='round'
               strokeMiterlimit={10}
-              stroke='currentColor'
             />
           </g>
         </svg>
-        BỘ LỌC TÌM KIẾM
+        Bộ lọc tìm kiếm
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <div className='my-5'>
         <div>Khoảng giá</div>
-        <form className='mt-2'>
+        <form className='mt-2' onSubmit={onSubmit}>
           <div className='flex items-start'>
             <Controller
               control={control}
@@ -107,17 +129,20 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                   <InputNumber
                     type='text'
                     className='grow'
-                    name='from'
-                    placeholder='đ Từ'
+                    placeholder='₫ TỪ'
                     classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                    onChange={field.onChange}
-                    value={field.value}
+                    classNameError='hidden'
+                    {...field}
+                    onChange={(event) => {
+                      field.onChange(event)
+                      trigger('price_max')
+                    }}
                   />
                 )
               }}
             />
 
-            <div className='mx-2 mt-2 shrink-0'>--</div>
+            <div className='mx-2 mt-2 shrink-0'>-</div>
             <Controller
               control={control}
               name='price_max'
@@ -126,17 +151,21 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                   <InputNumber
                     type='text'
                     className='grow'
-                    name='from'
-                    placeholder='đ Đến'
+                    placeholder='₫ ĐẾN'
                     classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
-                    onChange={field.onChange}
-                    value={field.value}
+                    classNameError='hidden'
+                    {...field}
+                    onChange={(event) => {
+                      field.onChange(event)
+                      trigger('price_min')
+                    }}
                   />
                 )
               }}
             />
           </div>
-          <Button className='twxt-sm flex w-full items-center justify-center bg-orange py-2 uppercase text-white hover:bg-orange/80'>
+          <div className='mt-1 min-h-[1.25rem] text-center text-sm text-red-600'>{errors.price_min?.message}</div>
+          <Button className='flex w-full items-center justify-center bg-orange p-2 text-sm uppercase text-white hover:bg-orange/80'>
             Áp dụng
           </Button>
         </form>
@@ -214,7 +243,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
         </li>
       </ul>
       <div className='my-4 h-[1px] bg-gray-300' />
-      <Button className='twxt-sm flex w-full items-center justify-center bg-orange py-2 uppercase text-white hover:bg-orange/80'>
+      <Button className='flex w-full items-center justify-center bg-orange p-2 text-sm uppercase text-white hover:bg-orange/80'>
         Xóa tất cả
       </Button>
     </div>
