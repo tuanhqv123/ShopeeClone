@@ -9,6 +9,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { Schema, schema } from '~/utils/rules'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { NoUndefinedField } from '~/types/utils.type'
+import { ObjectSchema } from 'yup'
 
 interface Props {
   queryConfig: QueryConfig
@@ -30,7 +31,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
       price_min: '',
       price_max: ''
     },
-    resolver: yupResolver(priceSchema)
+    resolver: yupResolver<FormData>(priceSchema as ObjectSchema<FormData>)
   })
   const navigate = useNavigate()
   const onSubmit = handleSubmit((data) => {
