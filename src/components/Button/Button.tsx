@@ -13,7 +13,7 @@ export default function Button(props: ButtonProps) {
       {isLoading && (
         <svg
           aria-hidden='true'
-          className='w-4 h-4 me-3 text-gray-200 animate-spin  fill-white '
+          className='me-3 h-4 w-4 animate-spin fill-white  text-gray-200 '
           viewBox='0 0 100 101'
           fill='none'
           xmlns='http://www.w3.org/2000/svg'

@@ -55,9 +55,9 @@ export default function Login() {
   return (
     <div className='bg-orange'>
       <div className='container'>
-        <div className='grid grid-cols-1 lg:grid-cols-5 py-10 lg:py-32 lg:pr-10'>
+        <div className='grid grid-cols-1 py-10 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
-            <form className='p-10 rounded bg-white shadow-sm' onSubmit={onSubmit} noValidate>
+            <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit} noValidate>
               <div className='text-2xl'>Đăng nhập</div>
               <Input
                 name='email'
@@ -79,7 +79,7 @@ export default function Login() {
               <div className='mt-1'>
                 <Button
                   type='submit'
-                  className='w-full py-4 px-2 uppercase bg-red-500 text-white text-sm hover:bg-red-600 flex justify-center items-center'
+                  className='flex w-full items-center justify-center bg-red-500 px-2 py-4 text-sm uppercase text-white hover:bg-red-600'
                   isLoading={loginMutation.isPending}
                   disabled={loginMutation.isPending}
                 >
@@ -87,9 +87,9 @@ export default function Login() {
                 </Button>
               </div>
               <div>
-                <div className='flex items-center justify-center mt-8'>
+                <div className='mt-8 flex items-center justify-center'>
                   <span className='text-gray-380'>Bạn mới biết đến Shopee?</span>
-                  <Link className='text-red-400 ml-2' to='/register'>
+                  <Link className='ml-2 text-red-400' to='/register'>
                     Đăng kí
                   </Link>
                 </div>

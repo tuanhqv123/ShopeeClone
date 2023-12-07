@@ -2,12 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-html{
+html {
   height: 100%;
   line-height: 1.2;
 }
 
-body{
+body {
   font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
   font-weight: 400;
 }
