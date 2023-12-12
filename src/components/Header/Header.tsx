@@ -1,6 +1,6 @@
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import Popover from '../Popover'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import authApi from '~/apis/auth.api'
 import { useContext } from 'react'
 import { AppContext } from '~/contexts/app.context'
@@ -11,6 +11,8 @@ import useQueryConfig from '~/hooks/useQueryConfig'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { omit } from 'lodash'
+import { PurchaseStatus } from '~/constants/purchase'
+import purchaseApi from '~/apis/purchase.api'
 
 type FormData = Pick<Schema, 'name'>
 
@@ -34,6 +36,16 @@ export default function Header() {
       setProfile(null)
     }
   })
+
+// khi chúng ta chuyển trang thì header chỉ bị re-render chứ không bị unmount-mount again , tất nhiên là trừ trường hợp logout rồi nhảy sang registerlayout rồi nhảy vào lại nên các query này sẽ không bị inactive => không bị gọi lại => không cần thiết phải set staletime : ìninity
+
+  const { data : purchasesInCartData} = useQuery({
+    queryKey: ['purchases', { status: PurchaseStatus.inCart }],
+    queryFn: () => purchaseApi.getPurchases({ status: PurchaseStatus.inCart })
+  })
+
+  const purchaseInCart = purchasesInCartData?.data.data
+
   const handleLogout = () => {
     logoutMutation.mutate()
   }
