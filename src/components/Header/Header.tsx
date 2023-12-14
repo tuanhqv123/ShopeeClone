@@ -11,14 +11,17 @@ import useQueryConfig from '~/hooks/useQueryConfig'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { omit } from 'lodash'
-import { PurchaseStatus } from '~/constants/purchase'
+import { purchasesStatus } from '~/constants/purchase'
 import purchaseApi from '~/apis/purchase.api'
+import noproduct from '~/assets/images/no_product.png'
+import { formatCurrency } from '~/utils/utils'
 
 type FormData = Pick<Schema, 'name'>
 
 const nameSchema = schema.pick(['name'])
 
 export default function Header() {
+  const MAX_PURCHASE = 5
   const queryConfig = useQueryConfig()
   const { register, handleSubmit } = useForm<FormData>({
     defaultValues: {
@@ -37,11 +40,11 @@ export default function Header() {
     }
   })
 
-// khi chúng ta chuyển trang thì header chỉ bị re-render chứ không bị unmount-mount again , tất nhiên là trừ trường hợp logout rồi nhảy sang registerlayout rồi nhảy vào lại nên các query này sẽ không bị inactive => không bị gọi lại => không cần thiết phải set staletime : ìninity
+  // khi chúng ta chuyển trang thì header chỉ bị re-render chứ không bị unmount-mount again , tất nhiên là trừ trường hợp logout rồi nhảy sang registerlayout rồi nhảy vào lại nên các query này sẽ không bị inactive => không bị gọi lại => không cần thiết phải set staletime : ìninity
 
-  const { data : purchasesInCartData} = useQuery({
-    queryKey: ['purchases', { status: PurchaseStatus.inCart }],
-    queryFn: () => purchaseApi.getPurchases({ status: PurchaseStatus.inCart })
+  const { data: purchasesInCartData } = useQuery({
+    queryKey: ['purchases', { status: purchasesStatus.inCart }],
+    queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
   })
 
   const purchaseInCart = purchasesInCartData?.data.data
@@ -194,111 +197,48 @@ export default function Header() {
             <Popover
               renderPopover={
                 <div className='relative max-w-[400px] rounded-sm border border-gray-200 bg-white text-sm shadow-md'>
-                  <div className='p-2'>
-                    <div className=' capitalize text-gray-400'>Sản phẩm mới thêm </div>
-                    <div className='mt-5'>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lnjgsvvebt6i2d_tn'
-                            alt='anh'
-                            className='ml-2 h-11 w-11'
-                          />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Sách - Tự Học 2000 Từ Vựng Tiếng Anh Theo Chủ Đề Phiên Bản Khổ Nhỏ Dành Cho Người Học Căn
-                            Bản - Học Kèm App Online
+                  {purchaseInCart ? (
+                    <div className='p-2'>
+                      <div className=' capitalize text-gray-400'>Sản phẩm mới thêm </div>
+                      <div className='mt-5'>
+                        {purchaseInCart.slice(0, MAX_PURCHASE).map((purchase) => (
+                          <div className='mt-3 flex py-2 hover:bg-gray-50' key={purchase._id}>
+                            <div className='flex-shrink-0'>
+                              <img
+                                src={purchase.product.image}
+                                alt={purchase.product.name}
+                                className='ml-2 h-11 w-11'
+                              />
+                            </div>
+                            <div className='ml-2 flex-grow overflow-hidden'>
+                              <div className='truncate'>{purchase.product.name}</div>
+                            </div>
+                            <div className='ml-2 flex-shrink-0'>
+                              <span className='text-orange'>₫{formatCurrency(purchase.product.price)}</span>
+                            </div>
                           </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-orange'>₫42.250</span>
-                        </div>
+                        ))}
                       </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lnjgsvvebt6i2d_tn'
-                            alt='anh'
-                            className='ml-2 h-11 w-11'
-                          />
+                      <div className='mt-6 flex items-center justify-between'>
+                        <div className='text-xs capitalize text-gray-500'>
+                          {purchaseInCart.length > MAX_PURCHASE ? purchaseInCart.length - MAX_PURCHASE : ''}
+                          {'  '}Thêm Hàng Vào Giỏ
                         </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Sách - Tự Học 2000 Từ Vựng Tiếng Anh Theo Chủ Đề Phiên Bản Khổ Nhỏ Dành Cho Người Học Căn
-                            Bản - Học Kèm App Online
-                          </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-orange'>₫42.250</span>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lnjgsvvebt6i2d_tn'
-                            alt='anh'
-                            className='ml-2 h-11 w-11'
-                          />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Sách - Tự Học 2000 Từ Vựng Tiếng Anh Theo Chủ Đề Phiên Bản Khổ Nhỏ Dành Cho Người Học Căn
-                            Bản - Học Kèm App Online
-                          </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-orange'>₫42.250</span>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lnjgsvvebt6i2d_tn'
-                            alt='anh'
-                            className='ml-2 h-11 w-11'
-                          />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Sách - Tự Học 2000 Từ Vựng Tiếng Anh Theo Chủ Đề Phiên Bản Khổ Nhỏ Dành Cho Người Học Căn
-                            Bản - Học Kèm App Online
-                          </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-orange'>₫42.250</span>
-                        </div>
-                      </div>
-                      <div className='mt-4 flex'>
-                        <div className='flex-shrink-0'>
-                          <img
-                            src='https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-lnjgsvvebt6i2d_tn'
-                            alt='anh'
-                            className='ml-2 h-11 w-11'
-                          />
-                        </div>
-                        <div className='ml-2 flex-grow overflow-hidden'>
-                          <div className='truncate'>
-                            Sách - Tự Học 2000 Từ Vựng Tiếng Anh Theo Chủ Đề Phiên Bản Khổ Nhỏ Dành Cho Người Học Căn
-                            Bản - Học Kèm App Online
-                          </div>
-                        </div>
-                        <div className='ml-2 flex-shrink-0'>
-                          <span className='text-orange'>₫42.250</span>
-                        </div>
+                        <button className='hover:bg_opacity-90 rounded-sm bg-orange px-4 py-2 capitalize text-white'>
+                          Xem giỏ hàng
+                        </button>
                       </div>
                     </div>
-                    <div className='mt-6 flex items-center justify-between'>
-                      <div className='text-xs capitalize text-gray-500'>Thêm Hàng Vào Giỏ</div>
-                      <button className='hover:bg_opacity-90 rounded-sm bg-orange px-4 py-2 capitalize text-white'>
-                        Xem giỏ hàng
-                      </button>
+                  ) : (
+                    <div className='flex h-[350px] w-[350px] items-center justify-center p-2'>
+                      <img src={noproduct} alt='no purchase' className='h-24 w-20' />
+                      <div className='mt-3 capitalize'>Chưa có sản phẩm</div>
                     </div>
-                  </div>
+                  )}
                 </div>
               }
             >
-              <Link to='/'>
+              <Link to='/' className='relative'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
@@ -313,6 +253,12 @@ export default function Header() {
                     d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
                   />
                 </svg>
+                <span
+                  className='absolute left-[18px] top-[-6px] rounded-full border-2 border-orange bg-white px-[8px] py-[1px] text-xs text-orange
+                '
+                >
+                  {purchaseInCart?.length}
+                </span>
               </Link>
             </Popover>
           </div>
