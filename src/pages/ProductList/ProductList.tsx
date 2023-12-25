@@ -36,7 +36,7 @@ export default function ProductList() {
       <div className='container'>
         {productsData && (
           <div className='grid grid-cols-12 gap-6'>
-            <div className='col-span-3'>
+            <div className='col-span-2'>
               <AsideFilter queryConfig={queryConfig} categories={categoriesData?.data.data || []} />
             </div>
             <div className='col-span-9'>

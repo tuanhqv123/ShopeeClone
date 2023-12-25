@@ -138,7 +138,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                 return (
                   <InputNumber
                     type='text'
-                    className='grow'
+                    className='grow text-sm'
                     placeholder='₫ TỪ'
                     classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
                     classNameError='hidden'
@@ -152,7 +152,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
               }}
             />
 
-            <div className='mx-2 mt-2 shrink-0'>-</div>
+            <div className='mx-2 mt-2 shrink-0 text-gray-500'>--</div>
             <Controller
               control={control}
               name='price_max'
@@ -160,7 +160,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                 return (
                   <InputNumber
                     type='text'
-                    className='grow'
+                    className='grow text-sm'
                     placeholder='₫ ĐẾN'
                     classNameInput='p-1 w-full outline-none border border-gray-300 focus:border-gray-500 rounded-sm focus:shadow-sm'
                     classNameError='hidden'
