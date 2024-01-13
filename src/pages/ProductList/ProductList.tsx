@@ -7,6 +7,7 @@ import Pagination from '~/components/Paginate'
 import { ProductListConfig } from '~/types/product.type'
 import categoryApi from '~/apis/category.api'
 import useQueryConfig from '~/hooks/useQueryConfig'
+import SlideShow from '~/components/SlideShow'
 
 export type QueryConfig = {
   [key in keyof ProductListConfig]: string
@@ -32,7 +33,8 @@ export default function ProductList() {
   })
 
   return (
-    <div className=' bg-gray-200 py-6 '>
+    <div className=' bg-neutral-100 py-6 '>
+      <SlideShow />
       <div className='container'>
         {productsData && (
           <div className='grid grid-cols-12 gap-6'>

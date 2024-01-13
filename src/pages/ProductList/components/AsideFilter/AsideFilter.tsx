@@ -92,7 +92,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                   }).toString()
                 }}
                 className={classNames('relative px-2', {
-                  'font-semibold text-orange': isActive
+                  ' text-orange': isActive
                 })}
               >
                 {isActive && (
@@ -128,8 +128,8 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <div className='my-5'>
-        <div>Khoảng giá</div>
-        <form className='mt-2' onSubmit={onSubmit}>
+        <div className='text-sm'>Khoảng Giá</div>
+        <form className='mt-3' onSubmit={onSubmit}>
           <div className='flex items-start'>
             <Controller
               control={control}
@@ -181,7 +181,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
         </form>
       </div>
       <div className='my-4 h-[1px] bg-gray-300' />
-      <div className='text-sm'>Đánh giá</div>
+      <div className='text-sm'>Đánh Giá</div>
       <RatingStar queryConfig={queryConfig} />
       <div className='my-4 h-[1px] bg-gray-300' />
       <Button
