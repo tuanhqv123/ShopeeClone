@@ -4,7 +4,7 @@ export interface User {
   roles: Role[]
   email: string
   name: string
-  date_of_birth: null
+  date_of_birth?: string //ISO 8610
   address: string
   phone: string
   createdAt: string
