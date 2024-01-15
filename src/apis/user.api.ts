@@ -7,7 +7,6 @@ interface BodyUpdateProfile extends Omit<User, '_id' | 'roles' | 'createdAt' | '
   newpassword?: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const userApi = {
   getProfile() {
     return http.get<SuccessResponse<User>>('me')
@@ -23,3 +22,5 @@ const userApi = {
     })
   }
 }
+
+export default userApi
