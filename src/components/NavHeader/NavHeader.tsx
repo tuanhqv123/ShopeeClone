@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { purchasesStatus } from '~/constants/purchase'
 import { useContext } from 'react'
 import { AppContext } from '~/contexts/app.context'
-import userImage from '~/assets/images/userImage.svg'
+import userImage from '~/assets/images/userImage.jpg'
 export default function NavHeader() {
   const queryClient = useQueryClient()
   const handleLogout = () => {
