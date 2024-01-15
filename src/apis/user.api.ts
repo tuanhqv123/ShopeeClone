@@ -4,7 +4,7 @@ import http from '~/utils/http'
 
 interface BodyUpdateProfile extends Omit<User, '_id' | 'roles' | 'createdAt' | 'updatedAt' | 'email'> {
   password?: string
-  newpassword?: string
+  newPassword?: string
 }
 
 const userApi = {

@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { purchasesStatus } from '~/constants/purchase'
 import { useContext } from 'react'
 import { AppContext } from '~/contexts/app.context'
-
+import userImage from '~/assets/images/userImage.svg'
 export default function NavHeader() {
   const queryClient = useQueryClient()
   const handleLogout = () => {
@@ -85,11 +85,7 @@ export default function NavHeader() {
           }
         >
           <div className='mr-2 h-5 w-5 flex-shrink-0'>
-            <img
-              src='https://cf.shopee.vn/file/d04ea22afab6e6d250a370d7ccc2e675_tn'
-              alt='avatar'
-              className='h-full w-full rounded-full object-cover'
-            />
+            <img src={profile?.avatar || userImage} alt='avatar' className='h-full w-full rounded-full object-cover' />
           </div>
           <div>{profile?.email}</div>
         </Popover>
