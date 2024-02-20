@@ -30,9 +30,9 @@ export default function SlideShow() {
   return (
     <div className='container'>
       <div className='mb-5 grid max-h-[235px] min-h-[235px] w-[1200px] grid-cols-3 gap-1'>
-        <div className='flex-grow-2 relative col-span-2 flex flex-shrink overflow-hidden rounded-sm'>
+        <div className='flex-grow-2 group relative col-span-2 flex flex-shrink overflow-hidden rounded-sm'>
           <button
-            className='absolute left-0 top-1/2 z-10 h-14 w-6 -translate-y-1/2 bg-black/20 text-white'
+            className='absolute left-0 top-1/2 z-10 hidden h-14 w-6 -translate-y-1/2 bg-black/20 text-white group-hover:block'
             onClick={PreviousImage}
           >
             <svg
@@ -48,7 +48,7 @@ export default function SlideShow() {
           </button>
           <img className=' relative h-full w-full overflow-clip' src={images[currentImageIndex]} />
           <button
-            className='absolute right-0 top-1/2 z-10 h-14 w-6 -translate-y-1/2 bg-black/20 text-white'
+            className='absolute right-0 top-1/2 z-10 hidden h-14 w-6 -translate-y-1/2 bg-black/20 text-white group-hover:block'
             onClick={NextImage}
           >
             <svg
@@ -64,16 +64,16 @@ export default function SlideShow() {
           </button>
         </div>
 
-        <div className='col-span-1 flex flex-shrink flex-grow flex-col gap-1 rounded-sm'>
-          <div className='block h-full w-full overflow-hidden object-cover'>
+        <div className='col-span-1 flex flex-col gap-1 rounded-sm'>
+          <div className='block h-full w-full overflow-hidden'>
             <img
-              className='h-full w-full overflow-clip'
+              className='h-full w-full object-cover'
               src='https://cf.shopee.vn/file/vn-50009109-d979aafb0cad5cd74676526e33c1b6ac_xhdpi'
             />
           </div>
-          <div className='block h-full w-full overflow-hidden rounded-sm object-cover'>
+          <div className='block h-full w-full overflow-hidden rounded-sm'>
             <img
-              className='h-full w-full overflow-clip'
+              className='h-full w-full object-cover'
               src='https://cf.shopee.vn/file/vn-50009109-d6608530d8bcfe263125fcc1503281fb_xhdpi'
             />
           </div>
