@@ -12,6 +12,7 @@ import { NoUndefinedField } from '~/types/utils.type'
 import { ObjectSchema } from 'yup'
 import RatingStar from '~/components/RatingStar'
 import omit from 'lodash/omit'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   queryConfig: QueryConfig
@@ -22,6 +23,7 @@ type FormData = NoUndefinedField<Pick<Schema, 'price_max' | 'price_min'>>
 
 const priceSchema = schema.pick(['price_min', 'price_max'])
 export default function AsideFilter({ queryConfig, categories }: Props) {
+  const { t } = useTranslation('home')
   const { category } = queryConfig
   const {
     control,
@@ -75,7 +77,8 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
             </g>
           </g>
         </svg>
-        Tất cả danh mục
+
+        {t('Aside Filter .all categories')}
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <ul>
@@ -124,7 +127,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
             />
           </g>
         </svg>
-        Bộ lọc tìm kiếm
+        {t('Aside Filter .filter search')}
       </Link>
       <div className='my-4 h-[1px] bg-gray-300' />
       <div className='my-5'>
