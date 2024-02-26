@@ -8,6 +8,7 @@ import { ProductListConfig } from '~/types/product.type'
 import categoryApi from '~/apis/category.api'
 import useQueryConfig from '~/hooks/useQueryConfig'
 import SlideShow from '~/components/SlideShow'
+import { Helmet } from 'react-helmet-async'
 
 export type QueryConfig = {
   [key in keyof ProductListConfig]: string
@@ -34,7 +35,12 @@ export default function ProductList() {
 
   return (
     <div className=' bg-neutral-100 py-6 '>
+      <Helmet>
+        <title>Trang chủ | Shopee</title>
+        <meta name='description' content='Trang chủ Shopee chứa các sản phẩm' />
+      </Helmet>
       <SlideShow />
+
       <div className='container'>
         {productsData && (
           <div className='grid grid-cols-12 gap-6'>

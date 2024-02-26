@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import UserSideNav from '../../components/UserSideNav'
+import { Helmet } from 'react-helmet-async'
 
 export default function UserLayout() {
   return (
@@ -10,6 +11,13 @@ export default function UserLayout() {
             <UserSideNav />
           </div>
           <div className='md:col-span-9 lg:col-span-10'>
+            <Helmet>
+              <title>Thông tin người dùng</title>
+              <meta
+                name='description'
+                content='Trang thông tin người dùng chứa hồ sơ người dùng , đơn mua , đổi mật khẩu'
+              />
+            </Helmet>
             <Outlet />
           </div>
         </div>

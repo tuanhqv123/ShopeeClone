@@ -11,6 +11,7 @@ import { ErrorResponse } from '~/types/utils.type'
 import { AppContext } from '~/contexts/app.context'
 import { useContext } from 'react'
 import Button from '~/components/Button'
+import { Helmet } from 'react-helmet-async'
 
 type FormData = Pick<Schema, 'email' | 'password' | 'confirm_password'>
 const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
@@ -55,6 +56,9 @@ export default function Register() {
   })
   return (
     <div className='bg-orange'>
+      <Helmet>
+        <title>Đăng kí ngay | Shopee Việt Nam</title>
+      </Helmet>
       <div className='container'>
         <div className='grid grid-cols-1 py-10 lg:grid-cols-5 lg:py-32 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
