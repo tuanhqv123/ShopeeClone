@@ -3,6 +3,7 @@
     "composite": true,
     "skipLibCheck": true,
     "module": "ESNext",
+    "target": "ES2015",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true
   },
